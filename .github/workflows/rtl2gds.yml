@@ -1,0 +1,43 @@
+
+name: E03 RTL Verification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  simulation:
+    name: Simulate E03 RTL
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Compile RTL and Testbench
+        run: |
+          iverilog -g2012 -s tb_e03 \
+            -o sim.vvp \
+            rtl/e03_serial_to_parallel.sv \
+            tb/tb_e03.sv
+
+      - name: Run simulation
+        run: |
+          vvp sim.vvp | tee simulation.log
+          if grep -iE "FAIL|FATAL|mismatch" simulation.log; then
+            exit 1
+          fi
+
+      - name: Upload simulation log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e03-simulation-log
+          path: simulation.log
+          if-no-files-found: ignore
