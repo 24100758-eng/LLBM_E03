@@ -86,11 +86,15 @@ module tb_e03;
             check(uio_out[0] == 1,
                   "Missing data_valid pulse");
 
-            @(posedge clk);
-            #1;
+// Disable reception before the next rising edge
+@(negedge clk);
+ui_in[1] = 1'b0;
 
-            check(uio_out[0] == 0,
-                  "data_valid longer than one cycle");
+@(posedge clk);
+#1;
+
+check(uio_out[0] == 0,
+      "data_valid longer than one cycle");
 
             if (uo_out == value)
                 $display("BYTE CHECK: %h mode=%b", value, mode);
