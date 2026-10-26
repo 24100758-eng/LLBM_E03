@@ -1,0 +1,48 @@
+
+name: E03 LibreLane RTL-to-GDSII
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "config.json"
+      - "rtl/**"
+      - ".github/workflows/librelane.yml"
+
+jobs:
+  rtl-to-gds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install LibreLane
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/pip install --upgrade librelane
+
+      - name: Run LibreLane
+        run: |
+          mkdir -p artifacts
+          .venv/bin/librelane --dockerized \
+            --pdk-root "$HOME/.ciel" \
+            config.json 2>&1 | tee artifacts/librelane.log
+
+      - name: Upload LibreLane results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e03-librelane-results
+          path: |
+            artifacts/
+            runs/
+          if-no-files-found: warn
+          retention-days: 14
