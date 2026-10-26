@@ -29,12 +29,15 @@ jobs:
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/pip install --upgrade librelane
 
+
       - name: Run LibreLane
         run: |
+          set -o pipefail
           mkdir -p artifacts
-          .venv/bin/librelane --dockerized \
+          .venv/bin/librelane --dockerized --docker-no-tty \
             --pdk-root "$HOME/.ciel" \
             config.json 2>&1 | tee artifacts/librelane.log
+
 
       - name: Upload LibreLane results
         if: always()
