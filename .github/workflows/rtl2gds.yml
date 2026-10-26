@@ -34,10 +34,12 @@ jobs:
             exit 1
           fi
 
-      - name: Upload simulation log
+      - name: Upload simulation results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: e03-simulation-log
-          path: simulation.log
-          if-no-files-found: ignore
+          name: e03-simulation-results
+          path: |
+            simulation.log
+            e03.vcd
+          if-no-files-found: warn
