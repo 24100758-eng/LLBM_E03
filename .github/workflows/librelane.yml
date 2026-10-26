@@ -34,7 +34,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p artifacts
-          .venv/bin/librelane --dockerized --docker-no-tty \
+          .venv/bin/librelane --docker-no-tty --dockerized \
             --pdk-root "$HOME/.ciel" \
             config.json 2>&1 | tee artifacts/librelane.log
 
