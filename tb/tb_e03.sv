@@ -101,7 +101,7 @@ module tb_e03;
 
                 // Before receiving eighth bit
                 if (j < 7) begin
-                    check(uio_out[0] == 1'b0,
+                    check(uio_out[3] == 1'b0,
                           "Valid asserted too early");
 
                     check(uo_out == previous_data,
@@ -113,7 +113,7 @@ module tb_e03;
             check(uo_out == value,
                   "Incorrect parallel output");
 
-            check(uio_out[0] == 1'b1,
+            check(uio_out[3] == 1'b1,
                   "Missing data_valid pulse");
 
             // Disable reception before next clock
@@ -123,7 +123,7 @@ module tb_e03;
             @(posedge clk);
             #1;
 
-            check(uio_out[0] == 1'b0,
+            check(uio_out[3] == 1'b0,
                   "data_valid longer than one cycle");
 
             check(uo_out == value,
@@ -151,7 +151,7 @@ module tb_e03;
             check(uo_out == 8'h00,
                   "Reset output error");
 
-            check(uio_out[0] == 1'b0,
+            check(uio_out[3] == 1'b0,
                   "Reset valid error");
 
             @(negedge clk);
@@ -181,10 +181,10 @@ module tb_e03;
         check(uo_out == 8'h00,
               "Initial reset output error");
 
-        check(uio_out[0] == 1'b0,
+        check(uio_out[3] == 1'b0,
               "Initial reset valid error");
 
-        check(uio_oe == 8'h01,
+        check(uio_oe == 8'h08,
               "Output enable error");
 
         @(negedge clk);
@@ -245,7 +245,7 @@ module tb_e03;
             @(posedge clk);
             #1;
 
-            check(uio_out[0] == 1'b0,
+            check(uio_out[3] == 1'b0,
                   "Valid during enable pause");
 
             check(uo_out == previous_data,
@@ -262,7 +262,7 @@ module tb_e03;
         check(uo_out == 8'hA5,
               "Enable pause byte mismatch");
 
-        check(uio_out[0] == 1'b1,
+        check(uio_out[3] == 1'b1,
               "Missing valid after pause");
 
         // Stop before next rising edge
@@ -272,7 +272,7 @@ module tb_e03;
         @(posedge clk);
         #1;
 
-        check(uio_out[0] == 1'b0,
+        check(uio_out[3] == 1'b0,
               "Valid did not clear after pause test");
 
         // ==========================
@@ -300,7 +300,7 @@ module tb_e03;
         check(uo_out == 8'h00,
               "Reset during frame failed");
 
-        check(uio_out[0] == 1'b0,
+        check(uio_out[3] == 1'b0,
               "Valid not cleared by reset");
 
         @(negedge clk);
