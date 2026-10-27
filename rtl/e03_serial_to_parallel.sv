@@ -49,7 +49,7 @@ wire msb_first = uio_in[2];
 
     assign uo_out = data_out;
 
-    assign uio_out = {7'b0, data_valid};
-    assign uio_oe  = 8'b00000001;
+assign uio_out = {4'b0000, data_valid, 3'b000};
+assign uio_oe  = 8'b00001000;
 
 endmodule
