@@ -52,8 +52,8 @@ module tb_e03;
         input bit_value;
         begin
             @(negedge clk);
-            ui_in[0] = bit_value;
-            ui_in[1] = 1'b1;
+            uio_in[0] = bit_value;
+            uio_in[1] = 1'b1;
 
             @(posedge clk);
             #1;
@@ -75,8 +75,8 @@ module tb_e03;
 
             // Disable reception before setup
             @(negedge clk);
-            ui_in[1] = 1'b0;
-            ui_in[2] = mode;
+            uio_in[1] = 1'b0;
+            uio_in[2] = mode;
 
             previous_data = uo_out;
 
@@ -93,8 +93,8 @@ module tb_e03;
 
                 // Put data on input before clock edge
                 @(negedge clk);
-                ui_in[0] = bit_value;
-                ui_in[1] = 1'b1;
+                uio_in[0] = bit_value;
+                uio_in[1] = 1'b1;
 
                 @(posedge clk);
                 #1;
@@ -118,7 +118,7 @@ module tb_e03;
 
             // Disable reception before next clock
             @(negedge clk);
-            ui_in[1] = 1'b0;
+            uio_in[1] = 1'b0;
 
             @(posedge clk);
             #1;
@@ -142,7 +142,7 @@ module tb_e03;
     task reset_dut;
         begin
             @(negedge clk);
-            ui_in[1] = 1'b0;
+            uio_in[1] = 1'b0;
             rst_n = 1'b0;
 
             @(posedge clk);
@@ -228,7 +228,7 @@ module tb_e03;
         reset_dut();
 
         @(negedge clk);
-        ui_in[2] = 1'b1;
+        uio_in[2] = 1'b1;
 
         // Send first 3 bits of A5: 101
         send_bit(1'b1);
@@ -237,7 +237,7 @@ module tb_e03;
 
         // Pause reception
         @(negedge clk);
-        ui_in[1] = 1'b0;
+        uio_in[1] = 1'b0;
 
         previous_data = uo_out;
 
@@ -267,7 +267,7 @@ module tb_e03;
 
         // Stop before next rising edge
         @(negedge clk);
-        ui_in[1] = 1'b0;
+        uio_in[1] = 1'b0;
 
         @(posedge clk);
         #1;
@@ -284,7 +284,7 @@ module tb_e03;
         reset_dut();
 
         @(negedge clk);
-        ui_in[2] = 1'b1;
+        uio_in[2] = 1'b1;
 
         send_bit(1'b1);
         send_bit(1'b0);
@@ -292,7 +292,7 @@ module tb_e03;
 
         // Reset while frame incomplete
         @(negedge clk);
-        ui_in[1] = 1'b0;
+        uio_in[1] = 1'b0;
         rst_n = 1'b0;
 
         #1;
