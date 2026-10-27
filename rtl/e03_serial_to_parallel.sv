@@ -10,9 +10,9 @@ module e03_serial_to_parallel (
     input  wire rst_n
 );
 
-    wire serial_in = ui_in[0];
-    wire enable   = ui_in[1];
-    wire msb_first = ui_in[2];
+wire serial_in = uio_in[0];
+wire enable   = uio_in[1];
+wire msb_first = uio_in[2];
 
     reg [7:0] shift_reg;
     reg [7:0] data_out;
